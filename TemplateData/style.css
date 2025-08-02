@@ -7,6 +7,18 @@ body { padding: 0; margin: 0 }
   width: 100vw !important;
   height: 100vh !important;
 }
+
+/* Mobile layout-specific background gradients */
+.unity-mobile.portrait body {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
+  transition: background 0.3s ease;
+}
+
+.unity-mobile.landscape body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  transition: background 0.3s ease;
+}
+
 #unity-container { position: absolute }
 #unity-container.unity-desktop { left: 50%; top: 50%; transform: translate(-50%, -50%) }
 #unity-container.unity-mobile { 
@@ -34,6 +46,22 @@ body { padding: 0; margin: 0 }
   margin: 0 !important;
   padding: 0 !important;
 }
+
+/* Ensure mobile canvas maintains fullscreen regardless of layout */
+.unity-mobile.portrait #unity-canvas,
+.unity-mobile.landscape #unity-canvas {
+  width: 100vw !important;
+  height: 100vh !important;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 #unity-loading-bar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none }
 #unity-logo { width: 154px; height: 130px; background: url('unity-logo-dark.png') no-repeat center }
 #unity-progress-bar-empty { width: 141px; height: 18px; margin-top: 10px; margin-left: 6.5px; background: url('progress-bar-empty-dark.png') no-repeat center }

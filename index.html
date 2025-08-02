@@ -82,6 +82,30 @@
         overflow: hidden !important;
       }
 
+      /* Mobile layout-specific styling */
+      .unity-mobile.portrait body {
+        background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
+      }
+
+      .unity-mobile.landscape body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      }
+
+      /* Ensure mobile canvas maintains fullscreen regardless of layout */
+      .unity-mobile.portrait #unity-canvas,
+      .unity-mobile.landscape #unity-canvas {
+        width: 100vw !important;
+        height: 100vh !important;
+        object-fit: contain;
+        max-width: 100%;
+        max-height: 100%;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
       /* Feel free to update this to match the desired WebGL layout appearance */
     </style>
   </head>
@@ -194,7 +218,7 @@
           
           // Setup Unity layout change listener
           window.addEventListener("message", function(event) {
-            if (event.data.type === "unity-layout-change") {
+            if (event.data && event.data.type === "unity-layout-change") {
               const layout = event.data.layout;
               console.log("Received layout from Unity:", layout);
 
@@ -204,13 +228,28 @@
               
               // Update Unity container class
               const unityContainer = document.querySelector("#unity-container");
-              unityContainer.classList.remove("portrait", "landscape");
-              unityContainer.classList.add(layout);
+              if (unityContainer) {
+                unityContainer.classList.remove("portrait", "landscape");
+                unityContainer.classList.add(layout);
+              }
               
               // Update canvas class and size
               const canvas = document.querySelector("#unity-canvas");
-              canvas.classList.remove("portrait", "landscape");
-              canvas.classList.add(layout);
+              if (canvas) {
+                canvas.classList.remove("portrait", "landscape");
+                canvas.classList.add(layout);
+                
+                // For mobile, ensure canvas stays fullscreen regardless of layout
+                if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                  canvas.style.width = "100vw";
+                  canvas.style.height = "100vh";
+                  canvas.style.maxWidth = "100%";
+                  canvas.style.maxHeight = "100%";
+                }
+              }
+              
+              // Show visual feedback for layout change
+              console.log(`Layout changed to: ${layout}`);
             }
           });
         }).catch((message) => {
@@ -218,35 +257,6 @@
         });
       };
       document.body.appendChild(script);
-      
-      // Global message listener for Unity layout changes
-      window.addEventListener("message", function(event) {
-        if (event.data && event.data.type === "unity-layout-change") {
-          const layout = event.data.layout;
-          console.log("Global listener - Received layout from Unity:", layout);
-
-          // Update body class
-          document.body.classList.remove("portrait", "landscape");
-          document.body.classList.add(layout);
-          
-          // Update Unity container class
-          const unityContainer = document.querySelector("#unity-container");
-          if (unityContainer) {
-            unityContainer.classList.remove("portrait", "landscape");
-            unityContainer.classList.add(layout);
-          }
-          
-          // Update canvas class and size
-          const canvas = document.querySelector("#unity-canvas");
-          if (canvas) {
-            canvas.classList.remove("portrait", "landscape");
-            canvas.classList.add(layout);
-          }
-          
-          // Show visual feedback
-          //unityShowBanner(`Layout changed to: ${layout}`, "info");
-        }
-      });
     </script>
   </body>
 </html>
