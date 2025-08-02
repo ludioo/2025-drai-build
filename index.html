@@ -92,8 +92,7 @@
       }
 
       /* Ensure mobile canvas maintains fullscreen regardless of layout */
-      .unity-mobile.portrait #unity-canvas,
-      .unity-mobile.landscape #unity-canvas {
+      .unity-mobile.portrait #unity-canvas {
         width: 100vw !important;
         height: 100vh !important;
         object-fit: contain;
@@ -124,7 +123,7 @@
         width: 70vh !important;
         height: 100vh !important;
         object-fit: contain;
-        max-width: 90%;
+        max-width: 70%;
         max-height: 100%;
         position: fixed !important;
         top: 0 !important;
@@ -267,12 +266,23 @@
                 canvas.classList.remove("portrait", "landscape");
                 canvas.classList.add(layout);
                 
-                // For mobile, ensure canvas stays fullscreen regardless of layout
+                // For mobile, apply specific sizing based on layout
                 if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-                  canvas.style.width = "100vw";
-                  canvas.style.height = "100vh";
-                  canvas.style.maxWidth = "100%";
-                  canvas.style.maxHeight = "100%";
+                  if (layout === "portrait") {
+                    // Portrait: fullscreen
+                    canvas.style.width = "100vw";
+                    canvas.style.height = "100vh";
+                    canvas.style.maxWidth = "100%";
+                    canvas.style.maxHeight = "100%";
+                  } else if (layout === "landscape") {
+                    // Landscape: non-fullscreen with margins
+                    canvas.style.width = "70vh";
+                    canvas.style.height = "100vh";
+                    canvas.style.maxWidth = "70%";
+                    canvas.style.maxHeight = "100%";
+                    canvas.style.left = "15vh";
+                    canvas.style.top = "0";
+                  }
                 }
               }
               

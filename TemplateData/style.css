@@ -48,8 +48,7 @@ body { padding: 0; margin: 0 }
 }
 
 /* Ensure mobile canvas maintains fullscreen regardless of layout */
-.unity-mobile.portrait #unity-canvas,
-.unity-mobile.landscape #unity-canvas {
+.unity-mobile.portrait #unity-canvas {
   width: 100vw !important;
   height: 100vh !important;
   object-fit: contain;
