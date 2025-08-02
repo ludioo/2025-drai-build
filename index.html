@@ -46,6 +46,25 @@
         height: 960px !important;
       }
 
+      /* Mobile responsive scaling */
+      .unity-mobile #unity-canvas {
+        width: 100vw !important;
+        height: 100vh !important;
+        object-fit: contain;
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      /* Ensure mobile container fits viewport */
+      .unity-mobile #unity-container {
+        width: 100vw !important;
+        height: 100vh !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+      }
+
       /* Feel free to update this to match the desired WebGL layout appearance */
     </style>
   </head>
@@ -125,11 +144,17 @@
         container.className = "unity-mobile";
         canvas.className = "unity-mobile";
 
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
+        // Configure mobile scaling
+        config.devicePixelRatio = 1; // Lower resolution for better performance
+        config.matchWebGLToCanvasSize = true; // Ensure canvas matches viewport
 
-        //unityShowBanner('WebGL builds are not supported on mobile devices.');
+        // Set canvas size to viewport dimensions
+        canvas.style.width = "100vw";
+        canvas.style.height = "100vh";
+        canvas.style.maxWidth = "100%";
+        canvas.style.maxHeight = "100%";
+
+        unityShowBanner('WebGL builds are not supported on mobile devices.');
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
 
